@@ -1,78 +1,143 @@
-3DCityDB-Web-Map-Client
-==================================
+# Visualization of rooftop solar potential in smart cities
 
-News
--------
-#### Version [v1.9.1](https://github.com/3dcitydb/3dcitydb-web-map/releases/tag/v1.9.1) released!
+### Using 3DCityDB-Web-Map-Client
 
-The 3DCityDB Web Map Client now supports displaying thematic data stored from data sources such as Google Spreadsheets (using Google Sheets API v4) and PostgreSQL (using PostgREST API).
+## Introduction
 
-See [changelogs](CHANGES.md) for the list of changes occurred in this version as well as previous versions.
+This project is a part of a thesis done in the University of Tartu.
 
-Introduction
--------
-The **3DCityDB-Web-Map-Client** is a web-based front-end of the 3DCityDB for high-performance 3D visualization and interactive exploration of **arbitrarily large semantic 3D city models in CityGML**. It utilizes the [Cesium Virtual Globe](http://cesiumjs.org/index.html) as its 3D geo-visualization engine based on HTML5 and Web Graphics Library (WebGL) to provide hardware acceleration and cross-platform functionalities like displaying 3D graphic contents on web browsers without the needs of additional plugins.
+Using the 3DCityDB, Tartu city CityGML files were converted with the Importer/Exporter tool that comes with 3DCityDB. 
 
-The key features and functionalities of the 3DCityDB-Web-Map-Client is summarized as follows: 
+The CityGML files were converted to KML Geometry to be able to colour building rooftops based on the solar potential that each polygon on a roof gets.
 
-* Support for efficient displaying, caching, prefetching, dynamic loading and unloading of large pre-styled 3D visualization models in the form of tiled KML/glTF datasets exported from the 3DCityDB using the Importer/Exporter
-* Intuitive user interface for adding and removing arbitrary number of data layers like 3D visualization model (KML/glTF), WMS imagery layer, and Cesium digital terrain model
-* Support for linking the 3D visualization models (KML/glTF) with the cloud-based Google Fusion Table allowing for querying the thematic data of every 3D object
-* Support for rich interaction with 3D visualization models (KML/glTF), for example, highlighting of 3D objects on mouseover and mouseclick as well as hiding and showing of the selected 3D objects
-* Support for exploring a 3D object of interest from different view perspectives using third-party mapping services like Microsoft Bing Maps with oblique view, Google Streetview, and a combined version (DualMaps) 
-* Support for on-the-fly activating and deactivating shadow visualization of 3D objects (only for glTF, KML is currently not supported yet) and Cesium digital terrain models
-* Support for collaborative creation and sharing of the workspace of the 3DCityDB-Web-Map-Client by means of generating a scene link including information about the current camera perspective, activation status of the shadow visualization, parameters of the current loaded data layers etc.  
+Scripts were made for the colouring of the KML files based on the solar potential.
 
-Architecture
--------
-<p align="center">
-<img src="theme/img/3dcitydb-web-map-client-architecture.jpg" width="800" />
-</p>
+The project uses 3DCityDB-Web-Map-Client to visualize the 3D spatial data.
+
+## requirements
+
+### Hardware
+
+The hardware on which the 3DCityDB-Web-Map-Client will be run must support WebGL. In addition, the web browser in use must also provide appropriate WebGL support. 
+
+The author of this project recommends at least 4 GB of RAM and a dedicated graphics card, as a dedicated graphics card makes the usage experience smoother.
+
+For best performance, it is recommended to use Google Chrome as the browser.
+
+### Software
+
+- A database for the 3DCityDB (Author used PostgreSQL).
+
+- A browser, Google Chrome is recommended.
+
+- Python for the scripts.
+
+### For the Web-Map-Client
+
+To run it locally **```Node.js```** needs to be installed. The project has the dependancies already included.
+
+### For the Scripts
+
+**```Python```** is needed for running the scripts.
+
+The following Python extensions need to be installed for the scripts:
+- **```pyKML```** for KML parsing
+- **```lxml```** dependancy of pyKML
+- **```pyproj```** for transforming coordinates from EPSG:3301 to WGS:84
+- **```Pandas```** for data analysis
+
+## Running the project locally
+
+To run the project locally **```Node.js```** needs to be installed.
+
+By default, the local server IP is set to **```localhost```** and the port is **```8000```**.
+
+These can be changed by editing the **```server.js```** file in the project folder.
+
+In a command prompt the following command runs the project locally if the command prompt current location is the project folder:
+
+**```node server.js```**
+
+**The web application, when run locally, opens with the URL ```localhost:8000/3dwebclient/index.html```**
+
+### Using already generated Tartu city 3D solar potential data
+
+3D visualization data that has already been coloured with the solar potential of the buildings can be found in this **[repository](https://github.com/alankolk/Tartu_solar_visualization_data)**.
+
+To use the data in the Web-Map-Client, put it in the project folder.
+- put the **```cities```** folder in the project folder
+- put the **```data```** folder in the project folder
+
+**If the local server IP (localhost) has not been changed in the ```server.js``` file along with the port (8000), then the following link automatically opens the Tartu visualization in the browser:**
+
+**[Tartu city LOD2 solar potential visualization localhost link](http://localhost:8000/3dwebclient/index.html?t=3DCityDB-Web-Map-Client&s=false&ts=0&la=58.379595&lo=26.726688&h=1838.114&hd=360&p=-90&r=0&l_0=u%3Dhttp%253A%252F%252Flocalhost%253A8000%252Fcities%252Ftartu_data%252FTartu_geometry_MasterJSON.json%26n%3DTartu%2520-%2520Solar%2520Potential%26ld%3DCOLLADA%252FKML%252FglTF%26lp%3Dfalse%26lc%3Dtrue%26gv%3D2.0%26a%3Dtrue%26tdu%3Dhttps%253A%252F%252Fdocs.google.com%252Fspreadsheets%252Fd%252F1NxWJ4qi46FuBzyIFMG9eXsFvJ6nY5Nmd0tFZGsXFZjI%252Fedit%253Fusp%253Dshare_link%26ds%3DGoogleSheets%26tt%3DHorizontal%26gc%3Dhttp%253A%252F%252Flocalhost%253A8000%252Fcities%252Ftartu_data%252FTartu.json%26il%3D125%26al%3D1.7976931348623157e%252B308%26ac%3D150%26av%3D80&sw=showOnStart%3Dfalse)**
+
+**NB!**
+
+**If parameters have been changed, then the usage example, for importing data into the web client, from the documentation can be found at the bottom of this page [Documentation Usage Example](https://3dcitydb-docs.readthedocs.io/en/latest/webmap/online-spreadsheet.html).**
+
+## How To Generate New Visualization Data
+
+To generate new visualization data you first need to download the 3DCityDB Importer/Exporter tool.
+
+**[Link to the Importer/Exporter tool download](https://www.3dcitydb.org/3dcitydb/d3dimpexp/).**
+
+Following the instructions in the **[Documentation of 3DCityDB](https://3dcitydb-docs.readthedocs.io/en/latest/)**, a **database** needs to be set up with **PostGIS extensions**.
+
+The Author of this project used **PostgreSQL** for the database along with **pgAdmin** as the managment software.
+
+Then **CityGML** files need to be imported into the database using the Importer/Exporter tool.
+
+In the **Preferences** of the tool, under **```VIS Export -> General```** the option ```Record metadata about exported features in JSON file``` needs to be ticked, to be able to use the colouring script.
+
+The **```metadata JSON```** file contains information about the tiles of the visualization export. Namely, what buildings are on which tiles.
+
+A visualization export can be created in the Importer/Exporter tool.
+
+#### **Steps under the ```VIS Export``` tab:**
+
+1. ```Geometry``` should be sellected under the ```Display as```.
+
+2. ```Tiling``` should be enabled (box ticked) and a ```Fixed side length``` should be specified (Author used 125 for the city of Tartu data).
+
+3. Then click ```Export```.
+
+#### **To generate a tabular attribute file:**
+
+This requires for a CityGML file to be imported into the database, because the attribute data is queried from the objects in the database.
+
+under the ```Table Export``` tab:
+
+An output file needs to be specified.
+
+A template file needs to be specified, more info can be found about this in the **[Documentation](https://3dcitydb-docs.readthedocs.io/en/latest/plugins/spreadsheet/export.html)**.
+
+Click **```Export```**
+
+## Running colouring scripts on the visualization export
+
+After generating a KML Geometry visualization export, the colouring script **```color_building_roofs.py```** functions can be used to colour the KML buildings.
+
+Locations for the **```visualization export folder```**, **```metadata JSON```** file and **```city-attributes.json```** need to be specified in the script.
+
+**```retrieve_solar_potential_data.py```** script can be used to find yearly kW/h data on the **```city-attributes.json```** data file.
+
+The script can also be used to add solar potential data to the **```tabular attribute data file```**.
+
+## Quick web-map-client local usage setup using Tartu 3D solar potential data
+
+1. Clone this repository onto your local machine.
+2. Download the Tartu 3D visualization data from [this repository](https://github.com/alankolk/Tartu_solar_visualization_data).
+3. Unzip the Tartu data into the project folder directly.
+4. Make sure you have Node.js installed on your local machine.
+5. Run ```node server.js``` in a command prompt in the project folder.
+6. Open the link in a browser **[Tartu city LOD2 solar potential visualization localhost link](http://localhost:8000/3dwebclient/index.html?t=3DCityDB-Web-Map-Client&s=false&ts=0&la=58.379595&lo=26.726688&h=1838.114&hd=360&p=-90&r=0&l_0=u%3Dhttp%253A%252F%252Flocalhost%253A8000%252Fcities%252Ftartu_data%252FTartu_geometry_MasterJSON.json%26n%3DTartu%2520-%2520Solar%2520Potential%26ld%3DCOLLADA%252FKML%252FglTF%26lp%3Dfalse%26lc%3Dtrue%26gv%3D2.0%26a%3Dtrue%26tdu%3Dhttps%253A%252F%252Fdocs.google.com%252Fspreadsheets%252Fd%252F1NxWJ4qi46FuBzyIFMG9eXsFvJ6nY5Nmd0tFZGsXFZjI%252Fedit%253Fusp%253Dshare_link%26ds%3DGoogleSheets%26tt%3DHorizontal%26gc%3Dhttp%253A%252F%252Flocalhost%253A8000%252Fcities%252Ftartu_data%252FTartu.json%26il%3D125%26al%3D1.7976931348623157e%252B308%26ac%3D150%26av%3D80&sw=showOnStart%3Dfalse)**
 
 
-License
--------
+
+## License
+
 The 3DCityDb-Web-Map-Client is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0). See the `LICENSE` file for more details.
-
-
-Latest release
---------------
-All releases are available from the [releases section](https://github.com/3dcitydb/3dcitydb-web-map/releases).
-
-This project is also available in Docker, see [repository](https://github.com/tum-gis/3dcitydb-web-map-docker) 
-and [images](https://hub.docker.com/r/tumgis/3dcitydb-web-map/tags?page=1&ordering=last_updated).
-
-For convenient use, there is an official [web link](https://www.3dcitydb.org/3dcitydb-web-map/latest/3dwebclient/index.html) available that can be called to directly run the 3DCityDb-Web-Map-Client on your web browser. 
-
-
-System requirements
-------------------- 
-The hardware on which the 3DCityDB-Web-Map-Client will be run must have a graphics card installed that supports WebGL. In addition, the web browser in use must also provide appropriate WebGL support. 
-
-You can visit the following website to check whether your web browser supports WebGL or not:
-
-[http://get.webgl.org/](http://get.webgl.org/)
-
-The 3DCityDB-Web-Map-Client has been successfully tested on (but is not limited to) the following web browsers under different desktop operating systems like Microsoft Windows, Linux, Apple Mac OS X, and even on mobile operating systems like Android and iOS. 
-* Apple Safari 
-* Mozilla Firefox
-* Google Chrome
-* Opera 
-
-For best performance, it is recommended to use Google Chrome.
-
-Documentation
--------------
-A complete and comprehensive documentation on the 3DCityDB-Web-Map-Client is installed with the 3DCityDB Importer/Exporter and is also available [online](https://www.3dcitydb.org/3dcitydb/documentation/).
-
-Contributing
-------------
-* To file bugs found in the software create a GitHub issue.
-* To contribute code for fixing filed issues create a pull request with the issue id.
-* To propose a new feature create a GitHub issue and open a discussion.
-
-Developers
------------------------------------
 
 The 3DCityDB-Web-Map-Client has been developed by: 
 
@@ -84,117 +149,6 @@ and with the support from the following cooperation partners:
 * Zhihang Yao, Jannes Bolling, Lucas van Walstijn, and Claus Nagel 
 <br>[Virtual City Systems, Berlin](https://vc.systems/)
 
-
-Demos
------------------------------------
-[Demo 1: Visualization of different LoD3 CityGML top-level features (TINRelief, Building, Bridge, Tunnel, WaterBody, Vegetation, CityFurniture, Transportation etc.) in glTF format](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?title=Railway_Scene_LoD3_Demo&shadows=false&terrainShadows=0&latitude=52.327365948439194&longitude=13.030088863339616&height=217.81657370715422&heading=25.207012266729155&pitch=-29.116822621630785&roll=0.09098022034414832&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FRailway_Scene_LoD3%252FRailway_Scene_LoD3_collada_MasterJSON.json%26name%3DRailway_Scene_LoD3%26layerDataType%3DCOLLADA%252FKML%252FglTF%26gltfVersion%3D1.0%26active%3Dtrue%26spreadsheetUrl%3D%26cityobjectsJsonUrl%3D%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D50%26maxCountOfVisibleTiles%3D200&splashWindow=url%3Dsplash%252FSplashWindow.html%26showOnStart%3Dtrue)
-
 <p align="center">
-<img src="theme/img/railway_scene_lod3_Demo.png" width="800" />
+<img src="theme/img/3dcitydb-web-map-client-architecture.jpg" width="800" />
 </p>
-
-[Demo 2: Visualization of semantic 3D City Model of Berlin. This Demo shows all Berlin buildings (> 500,000) with textured 3D geometries (LoD2) and thematic attributes per building](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?title=Berlin_Demo&shadows=false&terrainShadows=0&latitude=52.517479728958044&longitude=13.411141287558147&height=534.3099172977386&heading=345.2992773976952&pitch=-44.26228062802528&roll=359.933888621294&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FBerlin_Demo%252FBerlin_Buildings_rgbTexture_ScaleFactor_0.3%252FBerlin_Buildings_rgbTexture_collada_MasterJSON.json%26name%3DBrlin_Buildings_rgbTexture%26layerDataType%3DCOLLADA%252FKML%252FglTF%26gltfVersion%3D1.0%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252FDataSource%253Fdocid%253D19cuclDgIHMqrRQyBwLEztMLeGzP83IBWfEtKQA3B%2526pli%253D1%2523rows%253Aid%253D1%26cityobjectsJsonUrl%3D%26minLodPixels%3D100%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D200%26maxCountOfVisibleTiles%3D200&splashWindow=url%3Dsplash%252FSplashWindow.html%26showOnStart%3Dtrue)
-
-<p align="center">
-<img src="theme/img/berlin_buildings_texture_demo.jpg" width="800" />
-</p>
-
-[Demo 3: Visualization of semantic 3D City Model of Berlin. This Demo shows all Berlin buildings (> 500,000) with different level of detail 3D geometries (LoD1 and LoD2) and thematic attributes per building](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?title=Berlin_Geometry_Demo&latitude=52.51303384198974&longitude=13.419003387524793&height=332.5690553315315&heading=315.15087966347744&pitch=-40.2550086076328&roll=359.99999679197674&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FBerlin_All_Geometry%252FBerlin_All_Geometry_MasterJSON_NoJSONP.json%26name%3DBerlin_Building_Geometry%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252FDataSource%253Fdocid%253D19cuclDgIHMqrRQyBwLEztMLeGzP83IBWfEtKQA3B%2526pli%253D1%2523rows%253Aid%253D1%26minLodPixels%3D450%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D50%26maxCountOfVisibleTiles%3D200&layer_1=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FBerlin_All_Extruded%252FBerlin_All_Extruded_MasterJSON_NoJSONP.json%26name%3DBerlin_Building_Extruded%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252FDataSource%253Fdocid%253D19cuclDgIHMqrRQyBwLEztMLeGzP83IBWfEtKQA3B%2526pli%253D1%2523rows%253Aid%253D1%26minLodPixels%3D150%26maxLodPixels%3D450%26maxSizeOfCachedTiles%3D50%26maxCountOfVisibleTiles%3D200)
-
-<p align="center">
-<img src="theme/img/berlin_buildings_geometry_demo.jpg" width="800" />
-</p>
-
-[Demo 4: Visualization of semantic 3D city model of New York City (NYC). This Demo shows all NYC buildings (> 1 million), roads (> 140,000), and lots (> 800,000), all with 3D geometries (LoD1) and thematic attributes per object](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?batchSize=3&title=NYC_Demo&latitude=40.74337478856652&longitude=-73.98774263868867&height=329.6833486632038&heading=212.94068327361515&pitch=-48.25628003176496&roll=359.9999849535639&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FCesium_NYC_Demo%252FNYK_Building_Extruded%252FNYK_Building_Extruded_MasterJSON_NoJSONP.json%26name%3DNYC_Buildings%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252FDataSource%253Fdocid%253D1ivFBfqsnkv5OlvkQUybgfOSjIz_u9_98_mmJVUss%2523rows%253Aid%253D1%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D50%26maxCountOfVisibleTiles%3D200&layer_1=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FCesium_NYC_Demo%252FNYK_Street_Footprint%252FNYK_Street_Footprint_MasterJSON_NoJSONP.json%26name%3DNYC_Streets%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252Fdata%253Fdocid%253D1qLk_S4yxma0MI1LmISc8DdLn_NdhrFb784Mwizas%2523rows%253Aid%253D1%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D50%26maxCountOfVisibleTiles%3D200&layer_2=url%3Dhttps%253A%252F%252Fwww.3dcitydb.net%252F3dcitydb%252Ffileadmin%252Fmydata%252FCesium_NYC_Demo%252FNYK_Landuse_Footprint%252FNYK_Landuse_Footprint_MasterJSON_NoJSONP.json%26name%3DNYC_Lots%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252Fdata%253Fdocid%253D1cdvru7oiJIm0Us4Lgt-KYndNvGYcHjefYaTK_nK4%2523rows%253Aid%253D1%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D50%26maxCountOfVisibleTiles%3D200)
-
-<p align="center">
-<img src="theme/img/nyc_buildings_geometry_demo.jpg" width="800" />
-</p>
-
-[Demo 5: Visualization of semantic 3D landscape model of Vorarlberg. This Demo shows around 9800 attributed LoD2 buildings along with a high-resolution (0.5 meter) digital terrain model](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?title=Vorarlberg_Demo&shadows=false&terrainShadows=0&latitude=47.281098391110525&longitude=9.647423262947104&height=692.0842786450354&heading=41.28813196120646&pitch=-28.277794952314686&roll=0.14400933847950553&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.org%252F3dcitydb%252Ffileadmin%252Fmydata%252FVorarlberg_Demo%252FVorarlberg_Gebaeude_glTF%252FBuilding_glTF_default_appearance_300m_MasterJSON.json%26name%3DVorarlberg_Buildings%26layerDataType%3DCOLLADA%252FKML%252FglTF%26gltfVersion%3D0.8%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Fwww.google.com%252Ffusiontables%252FDataSource%253Fdocid%253D1IaFt5TBOP2cIp_x4oFmgXWLyhRHhhZFYHbUdHuZ5%2523rows%253Aid%253D1%26cityobjectsJsonUrl%3Dhttps%253A%252F%252Fwww.3dcitydb.org%252F3dcitydb%252Ffileadmin%252Fmydata%252FVorarlberg_Demo%252FVorarlberg_Gebaeude_glTF%252FBuilding_glTF_default_appearance_300m.json%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D200%26maxCountOfVisibleTiles%3D200&terrain=name%3DVorarlberg_DTM%26iconUrl%3Dhttps%253A%252F%252Fcdn.flaggenplatz.de%252Fmedia%252Fcatalog%252Fproduct%252Fall%252F4489b.gif%26tooltip%3DDigital%2520Terrain%2520Model%2520of%2520Vorarlberg%26url%3Dhttps%253A%252F%252Fwww.3dcitydb.org%252F3dcitydb%252Ffileadmin%252Fmydata%252FVorarlberg_Demo%252FVorarlberg_DTM&splashWindow=url%3Dsplash%252FSplashWindow.html%26showOnStart%3Dtrue)
-
-<p align="center">
-<img src="theme/img/vorarlberg_buildings_geometry_demo.jpg" width="800" />
-</p>
-
-
-# Mobile Support Extension
-
-
-## New features
-
-
-The current 3DCityDB-Web-Map-Client is equipped with an extension that provides better support for mobile devices. 
-The extension comes with a built-in mobile detector, which can automatically detect and adjust the client's behaviors accordingly to whether the 3DCityDB-Web-Map-Client is operating on a mobile device. 
-Some of the most important mobile features enabled by this extension are listed as follows:
- 
-* **A more lightweight graphical user interface:** 
-In order to make the best use of the limited screen real-estate available on mobile devices, some elements are removed or hidden from the web client, 
-such as credit texts and logos, as well as some of Cesium's built-in navigation controls that can easily be manipulated using touch gestures. 
-<p align="center">
-<img src="theme/img/mobile_homepage.PNG" width="50%" />
-</p>
-
-* **Visual adjustments:**
-    * The main toolbox now scales to fit to the screen size. In case of excess lines/length, the toolbox becomes scrollable (see picture below).
-    <p align="center">
-    <img src="theme/img/mobile_toolbox.PNG" width="50%" />
-    </p>
-
-    * The infobox displayed when a city object (e.g. building) is clicked is now displayed in fullscreen with scrollable contents, as illustrated below.
-    <p align="center">
-    <img src="theme/img/mobile_infobox.PNG" width="50%" />
-    </p>
-
-    * The loading icon is now shown as a horizontal bar at the bottom of the screen (highlighted by the green box in the picture below).
-    <p align="center">
-    <img src="theme/img/mobile_loading.PNG" width="50%" />
-    </p>
-
-* Most importantly: **The introduction of a GPS button** (located on the top right corner in the view toolbar) providing new functionalities involving user's current location and orientation. Namely: 
-    * GPS "snapshot" (single-click): shows the user's current position and orientation,
-    <p align="center">
-    <img src="theme/img/GPS_off.png" width="15%" />
-    </p> 
-
-    * Real-time Compass Tracking  (double-click): periodically shows the user's current orientation with fixed location,
-    <p align="center">
-    <img src="theme/img/GPS_on_ori.png" width="15%" />
-    </p> 
-
-    * Real-time Compass Tracking + Position (triple-click) or the "First-person View" mode: periodically shows the user's current orientation and position.
-    <p align="center">
-    <img src="theme/img/GPS_on_pos_ori.png" width="15%" />
-    </p> 
-
-    * To disable real-time tracking, simply either click on the button again to return to "snapshot" mode 
-or hold the button for 1 second, the camera will then ascend to a higher altitude of the current location.
-
-## Demos
-
-
-To test the mobile extension, simply click on one of the following two URLs:
-* [Demo first-person view](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?title=3DCityDB-Web-Map-Client&shadows=false&terrainShadows=0&latitude=48.14841421296063&longitude=11.567992899981077&height=288.04731096361564&heading=328.7476197616151&pitch=-79.22129067410182&roll=359.4611498135091&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.org%252F3dcitydb%252Ffileadmin%252Fmydata%252FTUM_Buildings%252FTUM_Buildings_glTF%252FTUM_Buildings_glTF_MasterJSON.json%26name%3DMUC%26layerDataType%3DCOLLADA%252FKML%252FglTF%26gltfVersion%3D0.8%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Ffusiontables.google.com%252Fdata%253Fdocid%253D1KE3odY92wmpwdyUs6osYhNPgRtI9W3GOQyuyHfp3%2523rows%253Aid%253D1%26cityobjectsJsonUrl%3D%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D200%26maxCountOfVisibleTiles%3D200&splashWindow=url%3Dsplash%252FSplashWindow.html%26showOnStart%3Dtrue)
-* [Demo debug-mode view](https://www.3dcitydb.org/3dcitydb-web-map/1.8.0/3dwebclient/index.html?title=3DCityDB-Web-Map-Client&shadows=false&terrainShadows=0&latitude=48.14841421296063&longitude=11.567992899981077&height=288.04731096361564&heading=328.7476197616151&pitch=-79.22129067410182&roll=359.4611498135091&layer_0=url%3Dhttps%253A%252F%252Fwww.3dcitydb.org%252F3dcitydb%252Ffileadmin%252Fmydata%252FTUM_Buildings%252FTUM_Buildings_glTF%252FTUM_Buildings_glTF_MasterJSON.json%26name%3DMUC%26layerDataType%3DCOLLADA%252FKML%252FglTF%26gltfVersion%3D0.8%26active%3Dtrue%26spreadsheetUrl%3Dhttps%253A%252F%252Ffusiontables.google.com%252Fdata%253Fdocid%253D1KE3odY92wmpwdyUs6osYhNPgRtI9W3GOQyuyHfp3%2523rows%253Aid%253D1%26cityobjectsJsonUrl%3D%26minLodPixels%3D140%26maxLodPixels%3D1.7976931348623157e%252B308%26maxSizeOfCachedTiles%3D200%26maxCountOfVisibleTiles%3D200&splashWindow=url%3Dsplash%252FSplashWindow.html%26showOnStart%3Dtrue&viewMode=debug).
-
-
-## Notes
-
-
-The mobile extension makes use of the Geolocation API and the DeviceOrientation API in HTML5. 
-The Geolocation API only functions via HTTPS since Google Chrome 50. Therefore, make sure the client is called from an HTTPS page or your own localhost. 
-
-Since the 3DCityDB-Web-Map-Client may cause a large amount of data traffic, it is recommended to connect your mobile device to an available WLAN before starting the client.
-
-Additional important notes:
-
-* If the browser informs you about the webpage not having a valid certificate, click "Advanced" -> "Continue" to proceed.
-* Test the client on devices equipped with GPS.
-* If the Geolocation API asks for permission to retrieve your current location, select "Allow".
-
-
-More information
-----------------
-[OGC CityGML](https://www.opengeospatial.org/standards/citygml) is an open data model and XML-based format for the storage and exchange of semantic 3D city models. It is an application schema for the [Geography Markup Language version 3.1.1 (GML3)](https://www.opengeospatial.org/standards/gml), the extendible international standard for spatial data exchange issued by the Open Geospatial Consortium (OGC) and the ISO TC211. The aim of the development of CityGML is to reach a common definition of the basic entities, attributes, and relations of a 3D city model.
-
-CityGML is an international OGC standard and can be used free of charge.
