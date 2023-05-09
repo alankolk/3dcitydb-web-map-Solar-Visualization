@@ -148,7 +148,3 @@ and with the support from the following cooperation partners:
 
 * Zhihang Yao, Jannes Bolling, Lucas van Walstijn, and Claus Nagel 
 <br>[Virtual City Systems, Berlin](https://vc.systems/)
-
-<p align="center">
-<img src="theme/img/3dcitydb-web-map-client-architecture.jpg" width="800" />
-</p>
