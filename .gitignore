@@ -2,6 +2,5 @@
 /.project
 /memorandum.txt
 .gitignore
-data
 *.gitignore
 /nbproject/private/
